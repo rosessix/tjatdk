@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tjat.dk</title>
+    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
+    <!-- set ico image -->
+    <link rel="icon" href="images/tjat.ico" type="image/x-icon">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *;**script-src 'self' http://onlineerp.solution.quebec 'unsafe-inline' 'unsafe-eval';** "> -->
+    <link href="http://fonts.cdnfonts.com/css/antique-olive" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+   
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js" integrity="sha512-MgkNs0gNdrnOM7k+0L+wgiRc5aLgl74sJQKbIWegVIMvVGPc1+gc1L2oK9Wf/D9pq58eqIJAxOonYPVE5UwUFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <link rel="stylesheet" href="active.css">
+    <!-- for guide -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shepherd.js/8.0.0/css/shepherd.min.css" integrity="sha512-zNOBFuXnJUnyPDwC1sN92qTVoFhONNoanpfr1tY8o5akFsqocpPSnxem7yPEqQ4NNkYpgtLomg3rqyuK8XCzKg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <div id="joinoraddmodal" class="modal modal-color">
+            <div class="modal-content">
+                <div class="center-align">
+                    <h4>Skal du tilslutte eller oprette et fællesskab?</h4>
+                    <a class="modal-close waves-effect waves-grey btn white-text modal-trigger" href="#joinservermodal">Tilslut</a>
+                    <a class="modal-close waves-effect waves-grey btn white-text modal-trigger" href="#addservermodal">Opret</a>
+                </div>
+            </div>
+        </div>
+        <div id="joinservermodal" class="modal modal-color">
+            <div class="modal-content">
+                <h4>Tilslut dig et fællesskab!</h4>
+                <div class="input-field">
+                    <input class="white-text" id="joinserver_link" type="text" clas="validate">
+                    <label for="joinserver_link">Indsæt invitations-koden til fællesskabet.</label>
+                </div>
+            </div>
+            <div class="modal-footer modal-color">
+                <a href="#!" class="modal-close waves-effect waves-grey btn-flat grey-text">Luk</a>
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat green-text" @click="joinServer">Tilslut</a>
+              </div>
+        </div>
+
+        <div id="changeprofilemodal" class="modal modal-color">
+            <div class="modal-content">
+                <div class="center-align">
+                    <h4>Her kan du ændre din profil.</h4>
+                    <div class="input-field">
+                        <input class="white-text" placeholder="Tjat navn" id="changeprofilename" type="text" clas="validate">
+                        <label for="changeprofilename"></label>
+                    </div>
+                    <div class="input-field">
+                        <input class="white-text" id="changeprofileimage" type="text" placeholder="Billede">
+                        <label for="changeprofileimage"></label>
+                    </div>
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat green-text" @click="changeProfileData">Gem.</a>
+                    <a class="modal-close waves-effect waves-red btn-flat red-text">Afslut</a>
+                </div>
+            </div>
+        </div>
+        <div id="addservermodal" class="modal modal-color">
+            <div class="modal-content">
+                <h4 style="text-align: center">Opret et fællesskab</h4>
+                <p style="text-align: center">Du kan oprette et fællesskab til dig og dine venner</p>
+
+                <div class="input-field">
+                    <input class="white-text" v-model="addServerName" :placeholder="user.username+ '\'s server'" id="addserver_name" type="text" clas="validate">
+                    <label for="addserver_name">Fællesskabs navn</label>
+                </div>
+                <div class="input-field">
+                    <input class="white-text" id="addserver_image" type="text">
+                    <label for="addserver_image">Indsæt link til billede</label>
+                </div>
+
+            </div>
+            <div class="modal-footer modal-color">
+                <a href="#!" class="modal-close waves-effect waves-grey btn-flat grey-text">Luk</a>
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat green-text" @click="createServer">Opret</a>
+            </div>
+        </div>
+        <div id="serverlist" class="z-depth-5">
+            <div class="server activeserver" id="server-friends" @click="changeServer('server-friends')">
+                <!-- <img src="https://seeklogo.com/images/D/discord-icon-new-2021-logo-09772BF096-seeklogo.com.png"> -->
+                <img src="images/tjat.png">
+            </div>
+            <div class="divider"></div>
+    
+            <div v-for="(server, serverindex) in serverList">
+                <!-- {{server}} -->
+                <div :id="server.id" class="server tooltipped" @click="changeServer(serverindex)" :data-tooltip="server.name">
+                    <img :src="server.icon">
+                </div>
+            </div>
+
+            <div class="server addserver tooltipped modal-trigger" href="#joinoraddmodal" id="server-addserver" data-tooltip="Tilføj server" >
+                <img src="images/plus.png">
+                <!-- <img src="https://seeklogo.com/images/D/discord-icon-new-2021-logo-09772BF096-seeklogo.com.png"> -->
+
+            </div>
+
+            <div class="server tooltipped modal-trigger user-avatar" id="myuser" data-tooltip="Ændr din profil" href="#changeprofilemodal">
+                <img :src="user.avatar">
+            </div>
+        </div>
+        <div class="channellist">
+            <ul v-if="currentServer">
+                <li class="channel" @click="createChannel(currentServer.id)">#opret-kanal</li>
+                <li class="channel" @click="CopyToClipboard(currentServer.invitecode, true, 'Kopieret invitations-kode!')">#inviter-andre</li>
+
+                <li class="channel" :id="channel" v-for="(channel, channelindex) in channelList" @click="changeChannel(currentServer.name, channel)">#{{channel.name}}</li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="header">
+                <h4 id="server-name" v-if="currentServer != undefined">{{currentServer.name}} <span v-if="currentChannel != undefined"> #{{currentChannel.name}}</span> </h4>
+            </div>
+
+            <div v-if="currentServer != 'friends'">
+                <!-- <h1>{{currentServer}}</h1> -->
+            </div>
+            <div v-if="messageList != undefined">
+                <div class="messagecontent">
+                    <div :id="message.id" class="message" v-for="(message, messageindex) in messageList">
+                        <div class="message-header">
+                            <div class="message-author">
+                                <img :src="message.author.avatar" class="message-avatar">
+                                
+                                <h5 style="height: 100%; line-height: normal;">{{message.author.displayname}}</h5>
+                            </div>
+                            <div class="message-time">
+                                <h5>{{message.time}}</h5>
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            <p>{{message.content}}</p>
+                        </div>
+                    </div>
+    
+                </div>
+                <!-- message input -->
+                <div class="message-input">
+                    <input type="text" id="message-input" style="color: white !important;" v-on:keyup.enter="sendMessage" ></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shepherd.js/8.0.0/js/shepherd.min.js" integrity="sha512-g6UoKc+cPrVq13/iMhDdv+shNha5ZZ9HeEc+qPK7zFulktsi82ajrlXt14o6qFGG504f5U3+B16JtwGIAUAgfQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="./active.js" defer></script>
+
+</body>
+</html>

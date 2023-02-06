@@ -1,0 +1,260 @@
+:root {
+    --grey-background-color: #2c2f33;
+    --blurple: #7289da;
+    --not-quite-dark: #23272a;
+
+    --serverlist-radius: 0.23s;
+}
+
+
+@font-face {
+    font-family: "Antique";
+    src: url(/fonts/AntiqueOlive.ttf);
+}
+
+*, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+
+}
+
+#serverlist {
+    position: absolute;
+    height: 100%;
+    background-color: var(--grey-background-color);
+    min-width: 80px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+    overflow: hidden;
+    overflow-y:auto;
+}
+
+.server {
+    /* min-height: 100vh; */
+    background-color: var(--not-quite-dark);
+
+    width: 48px;
+    min-height: 48px;
+    max-height: 48px;
+    border-radius: 50%;
+    transition: var(--serverlist-radius) ease-in-out;   
+    overflow: hidden;
+}
+
+.server:hover {
+    border-radius: 25%;
+}
+
+.server > img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    /* border-radius: 50%; */
+}
+
+.server > img:hover {
+    border-radius: 25%;
+    transition: var(--serverlist-radius) ease-in-out;
+}
+
+.activeserver {
+    background-color: var(--blurple);
+    border-radius: 25%;
+}
+
+.user-avatar {
+    position: absolute;
+    bottom: 10px;
+    object-fit: cover;
+}
+/* 
+.addserver {
+    top: 0;
+    padding: 0;
+} */
+
+.divider {
+    width: 100%;
+    background-color: #ffff;
+    height: 2px;
+    border-radius: 1px;
+    opacity: 0.05;
+}
+
+.content {
+    position: absolute;
+    top: 0;
+    padding: 0;
+    width: 90vw;
+    height: 100%;
+    left: 260px;
+    background-color: var(--not-quite-dark) !important;
+    color: white;
+}
+
+.header {
+    position: absolute;
+    /* left: */
+    top: 0;
+    padding: 0;
+    width: 95vw;
+    height: 50px;
+    /* left: 80px; */
+    background-color: var(--blurple) !important;
+    color: white;
+    z-index: 5;
+}
+
+#server-name {
+    top: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-color {
+    background-color: #2c2f33 !important;
+    color: white !important;
+}
+
+.whitetext {
+    color: white !important;
+}
+
+.channellist {
+    background-color: #2c2f33ef;
+    /* position: absolute; */
+    /* left: 80px; */
+    margin-left: 80px;
+    min-height: 100vh;
+    width: 180px;
+    color: white;
+    overflow-y: auto;
+    overflow: hidden;
+}
+
+.channel {
+    font-family: 'Antique';
+    text-transform: capitalize;
+    width: inherit;
+    /* height: 20px; */
+    text-align: center;
+    /* padding: 15px; */
+    font-size: 17px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.channel:hover {
+    background-color: #5d606480;
+    
+}
+
+.channellist > ul {
+    display: grid;
+    gap: 1rem;
+}
+
+.channel.active {
+    background-color: #575c6380;
+}
+
+.message {
+    display: flex;
+    flex-wrap: wrap;
+    /* background-color: red; */
+}
+
+.message:hover {
+    background-color: #575c6380;
+}
+.messagecontent {
+    position: absolute;
+    top: 55px;
+    /* left: 80px; */
+    width: calc(100vw - 260px);
+    height: calc(95vh - 60px);
+    /* background-color: #2c2f33; */
+    color: white;
+    overflow-y: scroll;
+    /* overflow: hidden; */
+}
+.visible {
+    /* display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important; */
+}
+
+.message-header {
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    /* background-color: #2c2f33; */
+    color: white;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.message-author {
+    display: inline-flex;
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.message-author-name {
+    height: 100% !important;
+}
+
+.message-time {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.message-content {
+    /* position: absolute; */
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px);
+    /* background-color: #2c2f33; */
+    color: white;
+    padding: 0;
+    overflow-y: auto !important;
+    font-size: 16px;
+
+    /* overflow: hidden; */
+}
+
+.message-avatar {
+    margin-top: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* input textarea */
+
+.message-input {
+    position: absolute;
+    bottom: 0;
+    border: none;
+    width: 93%;
+    height:40px;
+    color: white !important;
+    background-color: #474a4c;
+    z-index: 3;
+}
+
+.antiscrollbar {
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+}

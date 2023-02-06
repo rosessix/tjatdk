@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>tjat.dk @ registrering</title>
+    
+        <!-- set ico image -->
+        <link rel="icon" href="images/tjat.ico" type="image/x-icon">
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+       
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+        <link href="http://fonts.cdnfonts.com/css/antique-olive" rel="stylesheet">
+
+        <link rel="stylesheet" href="register.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js" integrity="sha512-MgkNs0gNdrnOM7k+0L+wgiRc5aLgl74sJQKbIWegVIMvVGPc1+gc1L2oK9Wf/D9pq58eqIJAxOonYPVE5UwUFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    
+    </head>
+<body>
+    <div id="app">
+        <div id="container">
+            <form class="col s12">
+                <h5 class="center-align" v-show="!showLogin">Opret en konto.</h5>
+                <h5 class="center-align" v-show="showLogin">Velkommen tilbage.</h5>
+
+                <div>
+                    <form class="col s6">
+                        <div class="row">
+                            <div class="centerstuff">
+                                <div class="input-field col offset-m3">
+                                    <input id="username" style="text-align:center" placeholder="Brugernavn" type="text" class="validate white-text" v-on:keyup.enter="handleForm">
+                                </div>
+                                <div class="input-field col offset-m3">
+                                    <input id="password" style="text-align:center" placeholder="Kodeord" type="password" class="validate white-text" v-on:keyup.enter="handleForm">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="center">
+                       
+                        <a class="waves-effect waves-light btn" @click="requestRegister" v-show="!showLogin">Opret</a>
+                        <a class="waves-effect waves-light btn" @click="requestLogin" v-show="showLogin">Login</a>
+
+                    </div>
+                </div>
+                <div class="container-footer">
+                    <p v-show="showerror" id="errmsg" class="errmsg"></p>
+                    <p v-show="!showLogin">Har du allerede en konto? <span @click="changeForm()" style="text-decoration:underline; cursor: pointer; color:aqua">Login.</span></p>
+                    <p v-show="showLogin">Har du ikke en konto? <span @click="changeForm()" style="text-decoration:underline; cursor: pointer; color:aqua">Opret en.</span></p>
+
+                    <div class="progress" v-show="loading">
+                        <div class="indeterminate"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="copyright">
+            <p style="text-align: center">copyright &copy; - tjat.dk - 2022</p>
+        </div>
+    </div>
+    <script src="./register.js" defer></script>
+</body>
+</html>
